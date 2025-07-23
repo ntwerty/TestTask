@@ -1,0 +1,11 @@
+SELECT 
+    d.DEPTNO,
+    d.DNAME
+FROM 
+    DEPT d
+WHERE 
+    d.DEPTNO NOT IN (
+        SELECT DISTINCT e.DEPTNO 
+        FROM EMP e 
+        WHERE e.DEPTNO IS NOT NULL
+    );

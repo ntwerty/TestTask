@@ -1,19 +1,14 @@
-WITH LastHired AS (
-    SELECT 
-        DEPTNO,
-        ENAME,
-        HIREDATE,
-        RANK() OVER (PARTITION BY DEPTNO ORDER BY HIREDATE DESC) AS hire_rank
-    FROM 
-        EMP
-)
 SELECT 
-    DEPTNO,
-    ENAME,
-    HIREDATE
+    e1.DEPTNO,
+    e1.ENAME,
+    e1.HIREDATE
 FROM 
-    LastHired
+    EMP e1
 WHERE 
-    hire_rank = 1
+    e1.HIREDATE = (
+        SELECT MAX(e2.HIREDATE)
+        FROM EMP e2
+        WHERE e2.DEPTNO = e1.DEPTNO
+    )
 ORDER BY 
-    HIREDATE;
+    e1.HIREDATE;
